@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import ru.practicum.shareit.item.model.Item;
+
 public class ItemMapper {
     public static ItemDto toItemDto(Item item) {
         return new ItemDto(
@@ -23,6 +24,7 @@ public class ItemMapper {
                 itemDto.getRequest() != null ? itemDto.getRequest() : null
         );
     }
+
     public static Item toItemWithBlankFields(ItemDto itemDto, Item item) {
         return new Item(
                 itemDto.getId(),

@@ -17,10 +17,12 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private UserService userService;
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping
     public UserDto createUser(@RequestBody UserDto userDto) throws ValidationException, ConflictException {
         return userService.createUser(userDto);
@@ -28,21 +30,21 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public UserDto updateUser(@RequestBody UserDto userDto, @PathVariable long id) throws ConflictException {
-        return userService.updateUser(userDto,id);
+        return userService.updateUser(userDto, id);
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers(){
+    public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable long id){
+    public UserDto getUserById(@PathVariable long id) {
         return userService.getUserById(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable long id){
+    public void deleteUserById(@PathVariable long id) {
         userService.deleteUserById(id);
     }
 }

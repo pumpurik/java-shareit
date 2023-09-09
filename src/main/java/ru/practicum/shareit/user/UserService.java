@@ -9,9 +9,13 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    UserDto createUser (UserDto userDto) throws ValidationException, ConflictException;
-    UserDto updateUser (UserDto userDto, Long id) throws ConflictException;
+    UserDto createUser(UserDto userDto) throws ValidationException, ConflictException;
+
+    UserDto updateUser(UserDto userDto, Long id) throws ConflictException;
+
     List<UserDto> getAllUsers();
-    UserDto getUserById (Long id);
+
+    UserDto getUserById(Long id);
+
     void deleteUserById(Long id);
 }

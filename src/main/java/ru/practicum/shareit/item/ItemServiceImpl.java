@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -44,15 +43,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllItemsForOwner (long userId){
+    public List<ItemDto> getAllItemsForOwner(long userId) {
         return itemRepository.getAllItemsForOwner(userId);
     }
 
     @Override
-    public List<ItemDto> getSearchItems (String text) {
+    public List<ItemDto> getSearchItems(String text) {
         if (text == null || text.isBlank()) return Collections.emptyList();
         return itemRepository.getSearchItems(text.toLowerCase());
     }
+
     private void validateOwnerOfItemExists(Long userId) throws NotFoundException {
         if (!userRepository.getUsers().containsKey(userId)) {
             log.info("Неверный айди владельца вещи: {}", userId);
