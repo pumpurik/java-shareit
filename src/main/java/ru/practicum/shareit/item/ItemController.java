@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/items")
 public class ItemController {
-    private final static String X_SHARER_USER_ID = "X-Sharer-User-Id";
+    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private ItemService itemService;
 
     @Autowired
