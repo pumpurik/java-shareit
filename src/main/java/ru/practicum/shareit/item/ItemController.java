@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/items")
 public class ItemController {
+    private final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private ItemService itemService;
 
     @Autowired
@@ -24,14 +25,14 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto createItem(@RequestBody ItemDto itemDto, @RequestHeader(value = "X-Sharer-User-Id") Long userId)
+    public ItemDto createItem(@RequestBody ItemDto itemDto, @RequestHeader(value = X_SHARER_USER_ID) Long userId)
             throws NotFoundException, ValidationException {
         return itemService.createItem(itemDto, userId);
     }
 
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestBody ItemDto itemDto, @PathVariable long itemId,
-                              @RequestHeader(value = "X-Sharer-User-Id") Long userId) throws NotFoundException {
+                              @RequestHeader(value = X_SHARER_USER_ID) Long userId) throws NotFoundException {
         return itemService.updateItem(itemDto, itemId, userId);
     }
 
@@ -41,7 +42,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getAllItemsForOwner(@RequestHeader(value = "X-Sharer-User-Id") long userId) {
+    public List<ItemDto> getAllItemsForOwner(@RequestHeader(value = X_SHARER_USER_ID) long userId) {
         return itemService.getAllItemsForOwner(userId);
     }
 
