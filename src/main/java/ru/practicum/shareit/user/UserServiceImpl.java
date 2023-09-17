@@ -9,15 +9,13 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -25,7 +23,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) throws ValidationException, ConflictException {
+    public UserDto createUser(UserDto userDto) throws ValidationException {
         validateEmail(userDto);
         try {
             return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
@@ -37,8 +35,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto updateUser(UserDto userDto, Long id) throws ConflictException {
         validateDuplicationEmailUser(userDto, id);
-        return UserMapper.toUserDto(userRepository.save(UserMapper.toUserWithBlankFields(userDto,
-                userRepository.findById(id).get())));
+        return UserMapper.toUserDto(userRepository.save(UserMapper.toUserWithBlankFields(userDto, userRepository.findById(id).get())));
     }
 
     @Override
@@ -50,13 +47,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto getUserById(Long id) throws NotFoundException {
-        return userRepository.findById(id).map(UserMapper::toUserDto).orElseThrow(()-> new NotFoundException("Пользователь не найден"));
+        return userRepository.findById(id).map(UserMapper::toUserDto).orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 
     @Override
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
+
     private void validateEmail(UserDto userDto) throws ValidationException {
         if (userDto.getEmail() == null || userDto.getEmail().isBlank() || !userDto.getEmail().contains("@")) {
             log.info("Ошибка почты пользователя");
@@ -65,7 +63,7 @@ public class UserServiceImpl implements UserService{
     }
 
     private void validateDuplicationUser(UserDto userDto) throws ConflictException {
-        Optional <User> user = userRepository.findByEmailContaining(userDto.getEmail());
+        Optional<User> user = userRepository.findByEmailContaining(userDto.getEmail());
         if (user.isPresent()) {
             log.info("Дубликат пользователя найден: {}", user);
             throw new ConflictException("Такой пользователь уже существует");
@@ -73,7 +71,7 @@ public class UserServiceImpl implements UserService{
     }
 
     private void validateDuplicationEmailUser(UserDto userDto, Long id) throws ConflictException {
-        Optional <User> user = userRepository.findByEmailContaining(userDto.getEmail());
+        Optional<User> user = userRepository.findByEmailContaining(userDto.getEmail());
         if (user.isPresent()) {
             if (user.get().getEmail().equals(userDto.getEmail()) && user.get().getId() != id) {
                 log.info("Найдена такая же почта у другого пользователя: {}", user);

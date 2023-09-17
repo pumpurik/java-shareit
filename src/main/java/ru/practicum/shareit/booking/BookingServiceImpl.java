@@ -46,9 +46,7 @@ public class BookingServiceImpl implements BookingService {
         validateItemForAvailable(itemById);
         validateStartAndEndOfBooking(bookingDtoRequest);
         validateOwnerIdNotEqualsUserId(itemById, userById);
-        return BookingMapper.toBookingDto(bookingRepository.save
-                (BookingMapper.toBookingFromRequest(bookingDtoRequest, userById,
-                        Status.WAITING, itemById)));
+        return BookingMapper.toBookingDto(bookingRepository.save(BookingMapper.toBookingFromRequest(bookingDtoRequest, userById, Status.WAITING, itemById)));
     }
 
     @Override
