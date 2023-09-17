@@ -9,6 +9,9 @@ import ru.practicum.shareit.booking.dto.Status;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 /**
  * TODO Sprint add-bookings.
  */
@@ -16,11 +19,22 @@ import ru.practicum.shareit.user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "bookings", schema = "public")
 public class Booking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    String start;
-    String end;
+    @Column(name = "start_date")
+    LocalDateTime start;
+    @Column(name = "end_date")
+    LocalDateTime end;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id")
     Item item;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "booker_id")
     User booker;
+    @Enumerated(EnumType.STRING)
     Status status;
 }
