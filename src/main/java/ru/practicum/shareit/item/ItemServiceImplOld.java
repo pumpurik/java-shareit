@@ -64,7 +64,7 @@ public class ItemServiceImplOld implements ItemService {
     private void validateOwnerOfItemExists(Long userId) throws NotFoundException {
         if (!userRepositoryOld.getUsers().containsKey(userId)) {
             log.info("Неверный идентификатор владельца вещи: {}", userId);
-            throw new NotFoundException("Указан неверный владелец вещи");
+            throw new NotFoundException(String.format("Указан неверный владелец вещи: %s", userId));
         }
     }
 
@@ -84,19 +84,19 @@ public class ItemServiceImplOld implements ItemService {
                     if (itemRepositoryOld.getItems().get(userId).get(itemId).getOwner().getId() != userId) {
                         log.info("Пользователь c идентификатором {} не является владельцем вещи, владелец - : {}", userId,
                                 itemRepositoryOld.getItems().get(userId).get(itemId).getOwner().getId());
-                        throw new NotFoundException("Пользователь c идентификатором " + userId + " не является владельцем вещи");
+                        throw new NotFoundException(String.format("Пользователь c идентификатором %s не является владельцем вещи", userId));
                     }
                 } else {
                     log.info("Пользователь c идентификатором {} не является владельцем вещи", userId);
-                    throw new NotFoundException("Пользователь c идентификатором " + userId + " не является владельцем вещи");
+                    throw new NotFoundException(String.format("Пользователь c идентификатором %s не является владельцем вещи", userId));
                 }
             } else {
                 log.info("Пользователь c идентификатором {} не является владельцем вещи", userId);
-                throw new NotFoundException("Пользователь c идентификатором " + userId + " не является владельцем вещи");
+                throw new NotFoundException(String.format("Пользователь c идентификатором %s не является владельцем вещи", userId));
             }
         } else {
             log.info("Пользователь c идентификатором {} не является владельцем вещи", userId);
-            throw new NotFoundException("Пользователь c идентификатором " + userId + " не является владельцем вещи");
+            throw new NotFoundException(String.format("Пользователь c идентификатором %s не является владельцем вещи", userId));
         }
     }
 }

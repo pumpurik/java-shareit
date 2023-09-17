@@ -37,11 +37,11 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto createBooking(BookingDtoRequest bookingDtoRequest, Long userId) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
             log.info("Пользователь {} не найден", userId);
-            return new NotFoundException("Пользователь не найден");
+            return new NotFoundException(String.format("Пользователь %s не найден", userId));
         });
         Item itemById = itemRepository.findById(bookingDtoRequest.getItemId()).orElseThrow(() -> {
             log.info("Вещь по айди {} не найдена", bookingDtoRequest.getId());
-            return new NotFoundException("Вещь не найдена!");
+            return new NotFoundException(String.format("Вещь по айди %s не найдена!", bookingDtoRequest.getId()));
         });
         validateItemForAvailable(itemById);
         validateStartAndEndOfBooking(bookingDtoRequest);
@@ -54,11 +54,11 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto approveBooking(Long bookingId, boolean approved, Long userId) throws NotFoundException, ValidationException {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
             log.info("Аренды не существует: {}", bookingId);
-            return new NotFoundException("Аренда не найдена!");
+            return new NotFoundException(String.format("Аренда не найдена по айди %s", bookingId));
         });
         Item item = itemRepository.findById(booking.getItem().getId()).orElseThrow(() -> {
             log.info("Вещь по айди {} не найдена", booking.getItem().getId());
-            return new NotFoundException("Вещь не найдена!");
+            return new NotFoundException(String.format("Вещь по айди %s не найдена!", booking.getItem().getId()));
         });
         validateOwnerOfItem(userId, item);
         validateBookingBeforeApprove(booking, approved);
@@ -78,7 +78,7 @@ public class BookingServiceImpl implements BookingService {
         });
         Item item = itemRepository.findById(booking.getItem().getId()).orElseThrow(() -> {
             log.info("Вещь по айди {} не найдена", booking.getItem().getId());
-            return new NotFoundException("Вещь не найдена!");
+            return new NotFoundException(String.format("Вещь по айди %s не найдена!", booking.getItem().getId()));
         });
         validateOwnerIdBookingOrOwnerIdItemForBooking(userId, booking, item);
         return BookingMapper.toBookingDto(booking);
@@ -88,7 +88,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getBookingsByState(State state, Long userId) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
             log.info("Пользователь {} не найден", userId);
-            return new NotFoundException("Пользователь не найден");
+            return new NotFoundException(String.format("Пользователь %s не найден", userId));
         });
         List<BookingDto> bookings = null;
         switch (state) {
@@ -121,7 +121,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getBookingsByOwnerOfItems(State state, Long userId) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
             log.info("Пользователь {} не найден", userId);
-            return new NotFoundException("Пользователь не найден");
+            return new NotFoundException(String.format("Пользователь %s не найден", userId));
         });
         List<BookingDto> bookings = null;
         switch (state) {
@@ -174,7 +174,7 @@ public class BookingServiceImpl implements BookingService {
     private void validateOwnerOfItem(Long userId, Item item) throws NotFoundException {
         if (item.getOwner().getId() != userId) {
             log.info("Пользователь не найден или не является владельцем вещи: {}", userId);
-            throw new NotFoundException("Владелец вещи не найден!");
+            throw new NotFoundException(String.format("Владелец вещи не найден по айди %s!", userId));
         }
     }
 
@@ -188,8 +188,8 @@ public class BookingServiceImpl implements BookingService {
 
     private void validateOwnerIdNotEqualsUserId(Item item, User user) throws NotFoundException {
         if (item.getOwner().getId() == user.getId()) {
-            log.info("Пользователь не может забронировать свою вещь");
-            throw new NotFoundException("Пользователь не может забронировать свою вещь");
+            log.info("Пользователь с айди {} не может забронировать свою вещь", user.getId());
+            throw new NotFoundException(String.format("Пользователь с айди %s не может забронировать свою вещь", user.getId()));
         }
     }
 
@@ -197,7 +197,7 @@ public class BookingServiceImpl implements BookingService {
         if (booking.getBooker().getId() != userId
                 && item.getOwner().getId() != userId) {
             log.info("Пользователь не является ни владельцем вещи, ни владельцем аренды: {}", userId);
-            throw new NotFoundException("Пользователь не найден!");
+            throw new NotFoundException(String.format("Владелец вещи не найден по айди %s!", userId));
         }
     }
 }
