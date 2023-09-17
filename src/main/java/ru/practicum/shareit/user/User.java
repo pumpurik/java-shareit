@@ -23,6 +23,6 @@ public class User {
     long id;
     @Column(nullable = false)
     String name;
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, unique = true)
     String email;
 }
