@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.User;
 
+import javax.persistence.*;
+
 /**
  * TODO Sprint add-item-requests.
  */
@@ -14,9 +16,15 @@ import ru.practicum.shareit.user.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "requests", schema = "public")
 public class ItemRequest {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String description;
+    @ManyToOne
+    @JoinColumn(name = "requestor_id")
     User requestor;
     String created;
 }

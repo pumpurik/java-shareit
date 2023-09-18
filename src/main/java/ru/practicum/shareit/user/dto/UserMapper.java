@@ -18,4 +18,10 @@ public class UserMapper {
                 userDto.getEmail()
         );
     }
+
+    public static User toUserWithBlankFields(UserDto userDto, User user) {
+        user.setName(userDto.getName() != null ? userDto.getName() : user.getName());
+        user.setEmail(userDto.getEmail() != null ? userDto.getEmail() : user.getEmail());
+        return user;
+    }
 }

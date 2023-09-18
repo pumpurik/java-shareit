@@ -2,8 +2,10 @@ package ru.practicum.shareit.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.ConflictException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -19,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(@Qualifier("userServiceImpl") UserService userService) {
         this.userService = userService;
     }
 
@@ -39,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable long id) {
+    public UserDto getUserById(@PathVariable long id) throws NotFoundException {
         return userService.getUserById(id);
     }
 
