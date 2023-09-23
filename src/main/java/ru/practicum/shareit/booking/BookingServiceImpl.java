@@ -1,11 +1,11 @@
 package ru.practicum.shareit.booking;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.*;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
@@ -33,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    // @Transactional(propagation = Propagation.REQUIRED)
     public BookingDto createBooking(BookingDtoRequest bookingDtoRequest, Long userId) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
             log.info("Пользователь {} не найден", userId);
@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    //  @Transactional(propagation = Propagation.REQUIRED)
     public BookingDto approveBooking(Long bookingId, boolean approved, Long userId) throws NotFoundException, ValidationException {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
             log.info("Аренды не существует: {}", bookingId);
@@ -84,6 +84,42 @@ public class BookingServiceImpl implements BookingService {
         return BookingMapper.toBookingDto(booking);
     }
 
+    @Override //этот
+    public List<BookingDto> getBookingsByState(State state, Long userId, Integer from, Integer size) throws Exception {
+        User userById = userRepository.findById(userId).orElseThrow(() -> {
+            log.info("Пользователь {} не найден", userId);
+            return new NotFoundException(String.format("Пользователь %s не найден", userId));
+        });
+        PageRequest pageRequest = PageRequest.of(size == 0 ? 0 : from / size, size, Sort.Direction.DESC, "start");
+
+        List<BookingDto> bookings = null;
+        switch (state) {
+            case ALL:
+                bookings = bookingRepository.findAllByBooker(userById, pageRequest)
+                        .getContent()
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case CURRENT:
+                bookings = bookingRepository.findAllByStartBeforeAndEndAfterAndBooker(LocalDateTime.now(), LocalDateTime.now(), userById, pageRequest)
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case PAST:
+                bookings = bookingRepository.findAllByEndBeforeAndBooker(LocalDateTime.now(), userById, pageRequest)
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case FUTURE:
+                bookings = bookingRepository.findAllByStartAfterAndBooker(LocalDateTime.now(), userById, pageRequest)
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+        }
+        if (state.toString().equals(Status.REJECTED.toString()) || state.toString().equals(Status.WAITING.toString())) {
+            bookings = bookingRepository
+                    .findAllByStatusAndBooker(Status.valueOf(state.toString()), userById, pageRequest)
+                    .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+        }
+        return bookings;
+    }
+
     @Override
     public List<BookingDto> getBookingsByState(State state, Long userId) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
@@ -112,6 +148,39 @@ public class BookingServiceImpl implements BookingService {
         if (state.toString().equals(Status.REJECTED.toString()) || state.toString().equals(Status.WAITING.toString())) {
             bookings = bookingRepository
                     .findAllByStatusAndBooker(Status.valueOf(state.toString()), userById, Sort.by(Sort.Direction.DESC, "start"))
+                    .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+        }
+        return bookings;
+    }
+
+    @Override
+    public List<BookingDto> getBookingsByOwnerOfItems(State state, Long userId, Integer from, Integer size) throws Exception {
+        User userById = userRepository.findById(userId).orElseThrow(() -> {
+            log.info("Пользователь {} не найден", userId);
+            return new NotFoundException(String.format("Пользователь %s не найден", userId));
+        });
+        List<BookingDto> bookings = null;
+        switch (state) {
+            case ALL:
+                bookings = bookingRepository.findAllByItemOwner(userById, PageRequest.of(from, size, Sort.Direction.DESC, "start"))
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case CURRENT:
+                bookings = bookingRepository.findAllByItemOwnerAndStartBeforeAndEndAfter(userById, LocalDateTime.now(), LocalDateTime.now(), PageRequest.of(from, size, Sort.Direction.DESC, "start"))
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case PAST:
+                bookings = bookingRepository.findAllByItemOwnerAndEndBefore(userById, LocalDateTime.now(), PageRequest.of(from, size, Sort.Direction.DESC, "start"))
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+            case FUTURE:
+                bookings = bookingRepository.findAllByItemOwnerAndStartAfter(userById, LocalDateTime.now(), PageRequest.of(from, size, Sort.Direction.DESC, "start"))
+                        .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
+                break;
+        }
+        if (state.toString().equals((Status.REJECTED).toString()) || state.toString().equals((Status.WAITING).toString())) {
+            bookings = bookingRepository
+                    .findAllByStatusAndItemOwner(Status.valueOf(state.toString()), userById, PageRequest.of(from, size, Sort.Direction.DESC, "start"))
                     .stream().map(BookingMapper::toBookingDto).collect(Collectors.toList());
         }
         return bookings;

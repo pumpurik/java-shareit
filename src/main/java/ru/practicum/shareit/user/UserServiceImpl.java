@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         try {
             return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
         } catch (ConstraintViolationException e) {
-            throw new ValidationException("пользователь с таким email существует");
+            throw new ValidationException("Пользователь с таким email существует");
         }
     }
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(f -> UserMapper.toUserDto(f))
+                .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
@@ -62,13 +62,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void validateDuplicationUser(UserDto userDto) throws ConflictException {
-        Optional<User> user = userRepository.findByEmailContaining(userDto.getEmail());
-        if (user.isPresent()) {
-            log.info("Дубликат пользователя найден: {}", user);
-            throw new ConflictException("Такой пользователь уже существует");
-        }
-    }
 
     private void validateDuplicationEmailUser(UserDto userDto, Long id) throws ConflictException {
         Optional<User> user = userRepository.findByEmailContaining(userDto.getEmail());

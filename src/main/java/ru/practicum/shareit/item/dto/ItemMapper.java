@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.dto;
 
 import ru.practicum.shareit.booking.dto.BookingTwoFieldsDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.ItemRequest;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class ItemMapper {
                 item.getDescription(),
                 item.isAvailable(),
                 item.getOwner(),
-                item.getRequest() != null ? item.getRequest() : null
+                item.getRequest() != null ? item.getRequest().getId() : null
         );
     }
 
@@ -39,16 +40,26 @@ public class ItemMapper {
         );
     }
 
-    public static Item toItem(ItemDto itemDto) {
+    public static Item toItem(ItemDto itemDto, ItemRequest itemRequest) {
         return new Item(
                 itemDto.getId(),
                 itemDto.getName(),
                 itemDto.getDescription(),
                 itemDto.getAvailable() == null ? Boolean.TRUE : itemDto.getAvailable(),
                 itemDto.getOwner(),
-                itemDto.getRequest() != null ? itemDto.getRequest() : null
+                itemDto.getRequestId() != null ? itemRequest : null
         );
     }
+//    public static Item toItem(ItemDto itemDto) {
+//        return new Item(
+//                itemDto.getId(),
+//                itemDto.getName(),
+//                itemDto.getDescription(),
+//                itemDto.getAvailable() == null ? Boolean.TRUE : itemDto.getAvailable(),
+//                itemDto.getOwner(),
+//                itemDto.get
+//        );
+//    }
 
     public static Item toItemWithBlankFields(ItemDto itemDto, Item item) {
         item.setName(itemDto.getName() != null ? itemDto.getName() : item.getName());

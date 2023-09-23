@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
 /**
@@ -21,6 +20,6 @@ public class ItemDto {
     String description;
     Boolean available;
     User owner;
-    ItemRequest request;
+    Long requestId;
 
 }

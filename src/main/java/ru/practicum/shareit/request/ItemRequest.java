@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * TODO Sprint add-item-requests.
@@ -26,5 +27,6 @@ public class ItemRequest {
     @ManyToOne
     @JoinColumn(name = "requestor_id")
     User requestor;
-    String created;
+    LocalDateTime created;
+
 }
