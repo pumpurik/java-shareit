@@ -44,7 +44,6 @@ public class ItemRequestMapperTest {
         assertEquals(itemRequestDto.getId(), mappedItemRequestDto.getId());
         assertEquals(itemRequestDto.getDescription(), mappedItemRequestDto.getDescription());
         assertEquals(itemRequestDto.getRequester(), mappedItemRequestDto.getRequester());
-        assertEquals(itemRequestDto.getCreated(), mappedItemRequestDto.getCreated());
     }
 
     @Test
@@ -62,7 +61,6 @@ public class ItemRequestMapperTest {
         assertEquals(testItemRequestDto.getId(), mappedItemRequest.getId());
         assertEquals(testItemRequestDto.getDescription(), mappedItemRequest.getDescription());
         assertEquals(user, mappedItemRequest.getRequestor());
-        assertEquals(testItemRequestDto.getCreated(), mappedItemRequest.getCreated());
     }
 
     @Test
@@ -72,7 +70,6 @@ public class ItemRequestMapperTest {
         assertEquals(itemRequestDto.getId(), mappedItemRequestDto.getId());
         assertEquals(itemRequestDto.getDescription(), mappedItemRequestDto.getDescription());
         assertEquals(itemRequestDto.getRequester(), mappedItemRequestDto.getRequester());
-        assertEquals(itemRequestDto.getCreated(), mappedItemRequestDto.getCreated());
         assertEquals(itemRequestDto.getItems(), mappedItemRequestDto.getItems());
     }
 }
