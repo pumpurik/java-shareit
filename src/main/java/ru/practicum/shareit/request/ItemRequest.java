@@ -29,9 +29,4 @@ public class ItemRequest {
     User requestor;
     LocalDateTime created;
 
-    public ItemRequest(String description, User requestor, LocalDateTime created) {
-        this.description = description;
-        this.requestor = requestor;
-        this.created = created;
-    }
 }

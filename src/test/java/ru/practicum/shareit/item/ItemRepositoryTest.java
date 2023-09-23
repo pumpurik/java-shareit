@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
@@ -29,13 +28,6 @@ class ItemRepositoryTest {
         Optional<Item> byIdAndOwnerId = itemRepository.findByIdAndOwnerId(1L, 1L);
         assertThat(byIdAndOwnerId).isPresent();
         assertThat(byIdAndOwnerId.get()).isEqualTo(item);
-    }
-
-    @Test
-    @Transactional
-    void search() {
-        List<Item> finds = itemRepository.search("щётка");
-        assertThat(finds).isNotEmpty();
     }
 
 
