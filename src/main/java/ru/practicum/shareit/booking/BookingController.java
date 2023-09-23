@@ -52,7 +52,7 @@ public class BookingController {
         try {
             State validState = State.valueOf(state);
             if (from.isEmpty() || size.isEmpty()) return bookingService.getBookingsByState(validState, userId);
-            if(from.get()<0 || size.get()<0)  throw new ValidationException();
+            if (from.get() < 0 || size.get() < 0) throw new ValidationException();
             return bookingService.getBookingsByState(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unknown state: " + state);
@@ -68,7 +68,7 @@ public class BookingController {
         try {
             State validState = State.valueOf(state);
             if (from.isEmpty() || size.isEmpty()) return bookingService.getBookingsByOwnerOfItems(validState, userId);
-            if(from.get()<0 || size.get()<0)  throw new ValidationException();
+            if (from.get() < 0 || size.get() < 0) throw new ValidationException();
             return bookingService.getBookingsByOwnerOfItems(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unknown state: " + state);
