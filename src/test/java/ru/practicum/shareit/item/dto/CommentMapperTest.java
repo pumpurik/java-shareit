@@ -7,6 +7,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -18,6 +19,8 @@ class CommentMapperTest {
     private CommentDto commentDto;
     private Item item;
     private User user;
+    private static final String nowDate = "2023-08-24T01:29:22";
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeEach
     public void setUp() {
@@ -30,7 +33,7 @@ class CommentMapperTest {
         comment.setId(1L);
         comment.setText("This is a comment.");
         comment.setAuthor(user);
-        comment.setCreated(LocalDateTime.now());
+        comment.setCreated(LocalDateTime.parse(nowDate, formatter));
 
         commentDto = new CommentDto(
                 comment.getId(),
