@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item;
 
+import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -15,9 +16,9 @@ public interface ItemService {
 
     ItemDtoWithBooking getItemById(Long itemId, Long userId) throws NotFoundException;
 
-    List<ItemDtoWithBooking> getAllItemsForOwner(Long userId);
+    List<ItemDtoWithBooking> getAllItemsForOwner(Long userId, Pageable pageable);
 
-    List<ItemDto> getSearchItems(String text);
+    List<ItemDto> getSearchItems(String text, Pageable pageable);
 
-    CommentDto createComment(CommentDto commentDto, Long itemId, Long userId) throws ValidationException;
+    CommentDto createComment(CommentDto commentDto, Long itemId, Long userId) throws ValidationException, NotFoundException;
 }

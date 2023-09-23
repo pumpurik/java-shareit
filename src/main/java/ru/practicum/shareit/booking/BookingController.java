@@ -9,6 +9,7 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * TODO Sprint add-bookings.
@@ -44,22 +45,31 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getBookingsByState(@RequestParam(defaultValue = "ALL") String state,
-                                               @RequestHeader(value = X_SHARER_USER_ID) Long userId) throws Exception {
+                                               @RequestHeader(value = X_SHARER_USER_ID) Long userId,
+                                               @RequestParam Optional<Integer> from,
+                                               @RequestParam Optional<Integer> size
+    ) throws Exception {
         try {
             State validState = State.valueOf(state);
-            return bookingService.getBookingsByState(validState, userId);
+            if (from.isEmpty() || size.isEmpty()) return bookingService.getBookingsByState(validState, userId);
+            if(from.get()<0 || size.get()<0)  throw new ValidationException();
+            return bookingService.getBookingsByState(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unknown state: " + state);
         }
-
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getBookingsByOwnerOfItems(@RequestParam(defaultValue = "ALL") String state,
-                                                      @RequestHeader(value = X_SHARER_USER_ID) Long userId) throws Exception {
+                                                      @RequestHeader(value = X_SHARER_USER_ID) Long userId,
+                                                      @RequestParam Optional<Integer> from,
+                                                      @RequestParam Optional<Integer> size
+    ) throws Exception {
         try {
             State validState = State.valueOf(state);
-            return bookingService.getBookingsByOwnerOfItems(validState, userId);
+            if (from.isEmpty() || size.isEmpty()) return bookingService.getBookingsByOwnerOfItems(validState, userId);
+            if(from.get()<0 || size.get()<0)  throw new ValidationException();
+            return bookingService.getBookingsByOwnerOfItems(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unknown state: " + state);
         }

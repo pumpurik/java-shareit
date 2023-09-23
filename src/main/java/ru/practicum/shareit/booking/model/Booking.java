@@ -1,4 +1,4 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -32,9 +32,17 @@ public class Booking {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     Item item;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booker_id")
     User booker;
     @Enumerated(EnumType.STRING)
     Status status;
+
+    public Booking(LocalDateTime start, LocalDateTime end, Item item, User booker, Status status) {
+        this.start = start;
+        this.end = end;
+        this.item = item;
+        this.booker = booker;
+        this.status = status;
+    }
 }

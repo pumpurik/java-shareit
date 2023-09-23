@@ -1,8 +1,6 @@
 package ru.practicum.shareit.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -20,8 +18,7 @@ import java.util.List;
 public class UserController {
     private UserService userService;
 
-    @Autowired
-    public UserController(@Qualifier("userServiceImpl") UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
