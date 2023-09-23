@@ -46,7 +46,7 @@ public class ItemRequestServiceImplTest {
     private User userTwo;
     private ItemRequest itemRequest;
     private ItemRequestDto itemRequestDto;
-    private final static String nowDate = "2023-08-24T01:29:22";
+    private static final String nowDate = "2023-08-24T01:29:22";
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeEach

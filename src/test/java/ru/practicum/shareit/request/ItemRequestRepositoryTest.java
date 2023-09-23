@@ -22,12 +22,12 @@ class ItemRequestRepositoryTest {
     @Autowired
     private TestEntityManager em;
     @Autowired
-    private ItemRequestRepository ItemRequestRepository;
+    private ItemRequestRepository itemRequestRepository;
 
     @Test
     void findAllByRequestorId() {
         ItemRequest itemRequest = em.find(ItemRequest.class, 1L);
-        List<ItemRequest> allByRequestorId = ItemRequestRepository.findAllByRequestorId(1L);
+        List<ItemRequest> allByRequestorId = itemRequestRepository.findAllByRequestorId(1L);
         assertThat(allByRequestorId).isNotEmpty();
         assertThat(allByRequestorId).contains(itemRequest);
     }
@@ -35,7 +35,7 @@ class ItemRequestRepositoryTest {
     @Test
     void findAllByRequestorIdNot() {
         ItemRequest itemRequest = em.find(ItemRequest.class, 1L);
-        Page<ItemRequest> finds = ItemRequestRepository.findAllByRequestorIdNot(2L, PageRequest.of(0, 3));
+        Page<ItemRequest> finds = itemRequestRepository.findAllByRequestorIdNot(2L, PageRequest.of(0, 3));
         assertThat(finds).isNotEmpty();
         assertThat(finds).contains(itemRequest);
     }
@@ -43,7 +43,7 @@ class ItemRequestRepositoryTest {
     @Test
     void findAllById() {
         ItemRequest itemRequest = em.find(ItemRequest.class, 1L);
-        List<ItemRequest> allById = ItemRequestRepository.findAllById(1L);
+        List<ItemRequest> allById = itemRequestRepository.findAllById(1L);
         assertThat(allById).isNotEmpty();
         assertThat(allById).contains(itemRequest);
     }

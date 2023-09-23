@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
-import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.Collections;
 import java.util.List;
@@ -101,6 +101,7 @@ class UserServiceImplTest {
         assertThat(updatedUser.getName()).isEqualTo("Updated John");
         assertThat(updatedUser.getEmail()).isEqualTo("updated@example.com");
     }
+
     @Test
     void testUpdateUserExpectNotValidateDuplicationEmailUser() {
         UserDto userDto = new UserDto();
@@ -115,6 +116,7 @@ class UserServiceImplTest {
             userService.updateUser(userDto, 1L);
         }, "Пользователь с такой почтой уже существует");
     }
+
     @Test
     public void testGetAllUsers() {
         UserDto userDto = new UserDto();

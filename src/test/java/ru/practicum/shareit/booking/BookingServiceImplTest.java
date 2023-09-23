@@ -54,12 +54,12 @@ class BookingServiceImplTest {
     private ItemRequest itemRequest;
     private BookingDtoRequest bookingDtoRequest;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    private final static String startTimeOne = "2023-06-21T01:29:22";
-    private final static String endTimeOne = "2023-10-22T02:30:22";
-    private final static String startTimeTwo = "2023-08-21T01:29:22";
-    private final static String endTimeTwo = "2023-08-30T02:30:22";
-    private final static String nowDate = "2023-08-24T01:29:22";
-    private final static String nowDateTwo = "2023-07-24T01:29:22";
+    private static final String startTimeOne = "2023-06-21T01:29:22";
+    private static final String endTimeOne = "2023-10-22T02:30:22";
+    private static final String startTimeTwo = "2023-08-21T01:29:22";
+    private static final String endTimeTwo = "2023-08-30T02:30:22";
+    private static final String nowDate = "2023-08-24T01:29:22";
+    private static final String nowDateTwo = "2023-07-24T01:29:22";
 
     @BeforeEach
     void init() {

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import ru.practicum.shareit.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserMapperTest {
     private User user;
@@ -13,7 +12,6 @@ class UserMapperTest {
 
     @BeforeEach
     public void setUp() {
-        // Создаем объекты для тестирования
         user = new User();
         user.setId(1L);
         user.setName("John Doe");
