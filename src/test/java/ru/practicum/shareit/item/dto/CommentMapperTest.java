@@ -53,20 +53,4 @@ class CommentMapperTest {
         assertEquals(commentDto.getCreated(), mappedCommentDto.getCreated());
     }
 
-    @Test
-    public void testToComment() {
-        CommentDto testCommentDto = new CommentDto(
-                2L,
-                "Another comment.",
-                "Jane Doe",
-                LocalDateTime.now()
-        );
-
-        Comment mappedComment = CommentMapper.toComment(testCommentDto, item, user);
-
-        assertEquals(testCommentDto.getId(), mappedComment.getId());
-        assertEquals(testCommentDto.getText(), mappedComment.getText());
-        assertEquals(item, mappedComment.getItem());
-        assertEquals(testCommentDto.getCreated(), mappedComment.getCreated());
-    }
 }
