@@ -55,7 +55,7 @@ public class BookingController {
             if (from.get() < 0 || size.get() < 0) throw new ValidationException();
             return bookingService.getBookingsByState(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
-            throw new ValidationException("Unknown state: " + state);
+            throw new ValidationException(String.format("Unknown state: %s", state));
         }
     }
 
@@ -71,7 +71,7 @@ public class BookingController {
             if (from.get() < 0 || size.get() < 0) throw new ValidationException();
             return bookingService.getBookingsByOwnerOfItems(validState, userId, from.get(), size.get());
         } catch (IllegalArgumentException e) {
-            throw new ValidationException("Unknown state: " + state);
+            throw new ValidationException(String.format("Unknown state: %s", state));
         }
 
     }

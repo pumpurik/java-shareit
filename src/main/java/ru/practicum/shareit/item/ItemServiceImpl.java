@@ -56,7 +56,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) throws NotFoundException {
-//        validateOwnerOfItemExists(userId, user);
         validateOwnerOfItem(userId, itemId);
         return ItemMapper.toItemDto(itemRepository.save(ItemMapper.toItemWithBlankFields(itemDto,
                 itemRepository.findById(itemId).get())));
@@ -89,7 +88,7 @@ public class ItemServiceImpl implements ItemService {
 
         } else {
             ItemDtoWithBooking item = itemRepository.findById(itemId).map(ItemMapper::toItemDtoWithBookingDtoForUser)
-                    .orElseThrow(() -> new NotFoundException("Вещь не найдена"));
+                    .orElseThrow(() -> new NotFoundException(String.format("Вещь по айди: %s не найдена", itemId)));
             if (!comments.isEmpty()) {
                 item.setComments(comments);
             }
@@ -169,13 +168,6 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-//    private void validateOwnerOfItemExists(Long userId, Optional<User> user) throws NotFoundException {
-//        if (userId == null || user.isEmpty()) {
-//            log.info("Неверный идентификатор владельца вещи: {}", userId);
-//            throw new NotFoundException("Указан неверный владелец вещи");
-//        }
-//    }
-
     private void validateItemFromUser(ItemDto itemDto) throws ValidationException {
         if (itemDto.getName() == null || itemDto.getName().isBlank() || itemDto.getAvailable() == null ||
                 itemDto.getDescription() == null || itemDto.getDescription().isBlank()) {
@@ -188,7 +180,7 @@ public class ItemServiceImpl implements ItemService {
     private void validateOwnerOfItem(long userId, long itemId) throws NotFoundException {
         if (!itemRepository.findByIdAndOwnerId(itemId, userId).isPresent()) {
             log.info("Пользователь c идентификатором {} не является владельцем вещи", userId);
-            throw new NotFoundException("Пользователь c идентификатором " + userId + " не является владельцем вещи");
+            throw new NotFoundException(String.format("Пользователь c идентификатором %s не является владельцем вещи", userId));
         }
     }
 }
