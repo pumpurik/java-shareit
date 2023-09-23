@@ -35,17 +35,15 @@ class BookingControllerTest {
     private BookingDto toBookingDto;
     private BookingDtoRequest bookingDtoRequest;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    private final static String startTime = "2023-09-21T01:29:22";
-    private final static String endTime = "2023-09-22T02:30:22";
+    private static final String startTime = "2023-09-21T01:29:22";
+    private static final String endTime = "2023-09-22T02:30:22";
 
     @BeforeEach
     void init() {
         objectMapper = new ObjectMapper();
-        firstBookingDto = new BookingDto(1, LocalDateTime.parse(startTime, formatter),
-                LocalDateTime.parse(endTime, formatter), new Item(), new User(), Status.REJECTED);
+        firstBookingDto = new BookingDto(1, LocalDateTime.parse(startTime, formatter), LocalDateTime.parse(endTime, formatter), new Item(), new User(), Status.REJECTED);
         bookingDtoRequest = new BookingDtoRequest();
-        toBookingDto = new BookingDto(2, LocalDateTime.parse(startTime, formatter),
-                LocalDateTime.parse(endTime, formatter), new Item(), new User(), Status.WAITING);
+        toBookingDto = new BookingDto(2, LocalDateTime.parse(startTime, formatter), LocalDateTime.parse(endTime, formatter), new Item(), new User(), Status.WAITING);
     }
 
     @Test
