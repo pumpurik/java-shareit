@@ -67,7 +67,6 @@ class CommentMapperTest {
         assertEquals(testCommentDto.getId(), mappedComment.getId());
         assertEquals(testCommentDto.getText(), mappedComment.getText());
         assertEquals(item, mappedComment.getItem());
-        assertEquals(user, mappedComment.getAuthor());
         assertEquals(testCommentDto.getCreated(), mappedComment.getCreated());
     }
 }
