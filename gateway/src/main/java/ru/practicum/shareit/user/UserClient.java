@@ -12,13 +12,12 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 @Service
 public class UserClient extends BaseClient {
-    private static final String API_PREFIX = "/users";
 
     @Autowired
     public UserClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(String.format("%s/users", serverUrl)))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
@@ -29,7 +28,7 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getUser(long userId) {
-        return get("/" + userId);
+        return get(String.format("/%s", userId));
     }
 
     public ResponseEntity<Object> getUsers() {
@@ -37,11 +36,11 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> update(long userId, UserDto userDto) {
-        return patch("/" + userId, userDto);
+        return patch(String.format("/%s", userId), userDto);
     }
 
     public ResponseEntity<Object> delete(long userId) {
-        return delete("/" + userId);
+        return delete(String.format("/%s", userId));
     }
 
 }

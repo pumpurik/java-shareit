@@ -15,13 +15,12 @@ import java.util.Map;
 
 @Service
 public class ItemClient extends BaseClient {
-    private static final String API_PREFIX = "/items";
 
     @Autowired
     public ItemClient(@Value("${shareit-server.url}") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
-                        .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
+                        .uriTemplateHandler(new DefaultUriBuilderFactory(String.format("%s/items", serverUrl)))
                         .requestFactory(HttpComponentsClientHttpRequestFactory::new)
                         .build()
         );
@@ -33,7 +32,7 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> update(long userId, Long itemId, ItemDto itemDto) {
-        return patch("/" + itemId, userId, itemDto);
+        return patch(String.format("/%s", itemId), userId, itemDto);
     }
 
     public ResponseEntity<Object> getItem(long userId, Long itemId) {
@@ -58,6 +57,6 @@ public class ItemClient extends BaseClient {
     }
 
     public ResponseEntity<Object> createComment(Long userId, Long itemId, CommentDto commentDto) {
-        return post("/" + itemId + "/comment", userId, commentDto);
+        return post(String.format("/%s/comment", itemId), userId, commentDto);
     }
 }

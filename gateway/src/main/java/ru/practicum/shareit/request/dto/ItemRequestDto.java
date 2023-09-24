@@ -22,12 +22,4 @@ public class ItemRequestDto {
     LocalDateTime created;
     List<ItemDto> items;
 
-    public ItemRequestDto(long id, String description, UserDto requester, LocalDateTime created) {
-        this.id = id;
-        this.description = description;
-        this.requester = requester;
-        this.created = created;
-    }
-
-
 }
