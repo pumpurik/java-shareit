@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.*;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -84,7 +85,8 @@ public class BookingServiceImpl implements BookingService {
         return BookingMapper.toBookingDto(booking);
     }
 
-    @Override //этот
+    @Override
+    @Transactional
     public List<BookingDto> getBookingsByState(State state, Long userId, Integer from, Integer size) throws Exception {
         User userById = userRepository.findById(userId).orElseThrow(() -> {
             log.info("Пользователь {} не найден", userId);
